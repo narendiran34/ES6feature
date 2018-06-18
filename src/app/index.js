@@ -1,26 +1,28 @@
 const express = require('express');
 const debug = require('debug')('index');
 const path = require('path');
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = process.env.PORT || 8009;
-const nav = 23;
 
 app.get('/file', (req, res) => {
-  res.sendFile(path.join(__dirname, 'src/views/index.html'));
+  res.sendFile(path.join(__dirname, 'api/views/index.html'));
 });
 
 app.get('/', (req, res) => {
   res.send('Heyyy...');
 });
 
-console.log(port + 'asd');
 app.listen(port, () => {
   debug('Server started at ' + port + '... Done');
 });
 
-const simpleRouter = require("./src/routes/routes")(nav);
-app.use('/route', simpleRouter);
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
-const readRouter = require("./src/routes/routes")(nav);
-app.use('/readroute', readRouter);
+
+const bookRouter = require("./api/routes/bookRoutes")();
+app.use('/api', bookRouter);	
+
+module.exports = app;
