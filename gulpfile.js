@@ -6,6 +6,5 @@ var supertest = require("supertest");
 gulp.task('test', function () {
 	env ({vars: {ENV: 'Test'}});
 	var stream = gulp.src('src/app/api/Tests/*.js', {read: false})
-		.pipe(gulpMocha({reporter: 'nyan'}));
-		
+		.pipe(gulpMocha({reporter: 'nyan', exit: true}))
 });

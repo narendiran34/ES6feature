@@ -13,9 +13,9 @@ describe('book test', () => {
 
     agent.post('/api/books')
       .send(bookPost)
-      .expect(200)
+      .expect(201)
       .end((err, results) => {
-        results.status.should.equal(200);
+        results.status.should.equal(201);
         results.body.read.should.equal(false);
         results.body.should.have.property('_id');
         done();
@@ -75,14 +75,14 @@ describe('book test', () => {
     });
   });
 
-  it('should be able to update the book', function (done) {
+  it('should be able to update the book with out ID being updated', function (done) {
     this.timeout(10000);
-    const bookPost = { title: 'asdsad123', author: '1234', genre: 'asdasd' };
+    const bookPost = {title: 'asdsad123', author: '1234', genre: 'asdasd'};
 
     const book = new Book(bookPost);
     book.save((err1, book1) => {
       agent.put(`/api/books/${book._id}`)
-        .send({ author: 'naren' })
+        .send({ author: 'naren', _id: '5b265eaae19e501e8080b73f' })
         .expect(200)
         .end((err, results) => {
           results.status.should.equal(200);
@@ -92,7 +92,7 @@ describe('book test', () => {
     });
   });
 
-  it('should not be able to find the book', function (done) {
+  it('should not be able to find the given book', function (done) {
     this.timeout(10000);
 
     agent.get('/api/books/5b265eaae19e501e8080b73f')

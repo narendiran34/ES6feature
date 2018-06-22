@@ -22,8 +22,7 @@ function libraryRouter() {
   bookRouter.use('/books/:bookId', (req, res, next) => {
     Book.findById(req.params.bookId, (err, book) => {
       if (err) {
-        res.status(500);
-        res.send(err);
+        res.status(500).send(err);
       } else if (book) {
         req.book = book;
         next();
